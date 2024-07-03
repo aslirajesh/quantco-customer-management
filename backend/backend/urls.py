@@ -31,11 +31,11 @@ class BothHttpAndHttpsSchemaGenerator(OpenAPISchemaGenerator):
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Customer managment APIs",
+        title="Customer Management APIs",
         default_version="v1",
         description="Sample description",
         terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="leads@servicepack.ai"),
+        contact=openapi.Contact(email="rajeshkumar@rajesh.com"),
         license=openapi.License(name="BSD License"),
     ),
     public=True,
