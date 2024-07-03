@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CustomerList from '../components/CustomerList';
-import axios from 'axios';
+import axiosInstance from '../axiosInstance';
 
 const CustomersPage = () => {
   const navigate = useNavigate();
@@ -14,9 +14,7 @@ const CustomersPage = () => {
   }, [token, navigate]);
 
   const handleLogout = async () => {
-    await axios.post('http://localhost:8000/api/v1/account/logout/', {}, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    await axiosInstance.post('account/logout/', {}, );
     localStorage.removeItem('token');
     navigate('/login');
   };

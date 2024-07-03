@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../axiosInstance';
 
 const CustomerModal = ({ customer, onClose, onSave }) => {
   const [formData, setFormData] = useState({
@@ -22,11 +22,33 @@ const CustomerModal = ({ customer, onClose, onSave }) => {
 
   const validate = () => {
     let tempErrors = {};
-    if (!formData.first_name) tempErrors.first_name = "First name is required";
-    if (!formData.last_name) tempErrors.last_name = "Last name is required";
-    if (!formData.date_of_birth) tempErrors.date_of_birth = "Date of birth is required";
-    if (!formData.phone_number) tempErrors.phone_number = "Phone number is required";
-    if (new Date(formData.date_of_birth) >= new Date()) tempErrors.date_of_birth = "Date of birth must be in the past";
+    const nameRegex = /^[A-Za-z\s]+$/;
+    const phoneRegex = /^\d+$/;
+  
+    if (!formData.first_name) {
+      tempErrors.first_name = "First name is required";
+    } else if (!nameRegex.test(formData.first_name)) {
+      tempErrors.first_name = "First name can only contain alphabets and spaces";
+    }
+  
+    if (!formData.last_name) {
+      tempErrors.last_name = "Last name is required";
+    } else if (!nameRegex.test(formData.last_name)) {
+      tempErrors.last_name = "Last name can only contain alphabets and spaces";
+    }
+  
+    if (!formData.date_of_birth) {
+      tempErrors.date_of_birth = "Date of birth is required";
+    } else if (new Date(formData.date_of_birth) >= new Date()) {
+      tempErrors.date_of_birth = "Date of birth must be in the past";
+    }
+  
+    if (!formData.phone_number) {
+      tempErrors.phone_number = "Phone number is required";
+    } else if (!phoneRegex.test(formData.phone_number)) {
+      tempErrors.phone_number = "Phone number can only contain digits";
+    }
+  
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
@@ -36,14 +58,10 @@ const CustomerModal = ({ customer, onClose, onSave }) => {
     if (!validate()) return;
     try {
       if (customer) {
-        const response = await axios.patch(`http://localhost:8000/api/v1/customers/${customer.id}/`, formData, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        });
+        const response = await axiosInstance.patch(`/customers/${customer.id}/`, formData);
         onSave(response.data);
       } else {
-        const response = await axios.post('http://localhost:8000/api/v1/customers/', formData, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        });
+        const response = await axiosInstance.post('/customers/', formData);
         onSave(response.data);
       }
     } catch (error) {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../axiosInstance';
 import CustomerModal from './CustomerModal';
 
 const CustomerList = () => {
@@ -9,19 +9,23 @@ const CustomerList = () => {
 
   useEffect(() => {
     const fetchCustomers = async () => {
-      const response = await axios.get('http://localhost:8000/api/v1/customers/', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      });
-      setCustomers(response.data);
+      try {
+        const response = await axiosInstance.get('customers');
+        setCustomers(response.data);
+      } catch (error) {
+        console.error(error);
+      }
     };
     fetchCustomers();
   }, []);
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:8000/api/v1/customers/${id}/`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    });
-    setCustomers(customers.filter(customer => customer.id !== id));
+    try {
+      await axiosInstance.delete(`/customers/${id}/`);
+      setCustomers(customers.filter(customer => customer.id !== id));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleSave = (customer) => {

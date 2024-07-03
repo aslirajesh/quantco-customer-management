@@ -1,3 +1,4 @@
+import re
 from rest_framework import serializers
 from .models import Customer
 from datetime import date
@@ -8,13 +9,15 @@ class CustomerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate_first_name(self, value):
-        if not value.isalpha():
-            raise serializers.ValidationError("First name must contain only letters.")
+        # Allow letters and spaces only
+        if not re.match("^[A-Za-z ]*$", value):
+            raise serializers.ValidationError("First name must contain only letters and spaces.")
         return value
 
     def validate_last_name(self, value):
-        if not value.isalpha():
-            raise serializers.ValidationError("Last name must contain only letters.")
+        # Allow letters and spaces only
+        if not re.match("^[A-Za-z ]*$", value):
+            raise serializers.ValidationError("Last name must contain only letters and spaces.")
         return value
 
     def validate_date_of_birth(self, value):

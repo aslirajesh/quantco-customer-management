@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../axiosInstance';
 import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
@@ -10,11 +10,13 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
     try {
-      const response = await axios.post('http://localhost:8000/api/v1/account/token/', { username, password });
+      const response = await axiosInstance.post('account/token/', {username, password});
       localStorage.setItem('token', response.data.access);
       navigate('/customers');
-    } catch (err) {
+    } catch (error) {
       setError('Invalid username or password');
     }
   };
