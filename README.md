@@ -26,3 +26,5 @@ cd quantco-customer-management.git
 ```sh
 docker-compose up --build
 ```
+
+## Swagger Docs for API is at endpoint "api/docs"
