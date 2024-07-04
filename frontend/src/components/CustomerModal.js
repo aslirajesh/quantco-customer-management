@@ -58,10 +58,10 @@ const CustomerModal = ({ customer, onClose, onSave }) => {
     if (!validate()) return;
     try {
       if (customer) {
-        const response = await axiosInstance.patch(`/customers/${customer.id}/`, formData);
+        const response = await axiosInstance().patch(`/customers/${customer.id}/`, formData);
         onSave(response.data);
       } else {
-        const response = await axiosInstance.post('/customers/', formData);
+        const response = await axiosInstance().post('/customers/', formData);
         onSave(response.data);
       }
     } catch (error) {

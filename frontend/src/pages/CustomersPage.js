@@ -11,10 +11,10 @@ const CustomersPage = () => {
     if (!token) {
       navigate('/login');
     }
-  }, [token, navigate]);
+  }, [token]);
 
   const handleLogout = async () => {
-    await axiosInstance.post('account/logout/', {}, );
+    await axiosInstance().post('account/logout/', {}, );
     localStorage.removeItem('token');
     navigate('/login');
   };

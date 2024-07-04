@@ -13,7 +13,7 @@ const LoginForm = () => {
     setError('');
 
     try {
-      const response = await axiosInstance.post('account/token/', {username, password});
+      const response = await axiosInstance().post('account/token/', {username, password});
       localStorage.setItem('token', response.data.access);
       navigate('/customers');
     } catch (error) {

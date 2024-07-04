@@ -10,7 +10,7 @@ const CustomerList = () => {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await axiosInstance.get('customers');
+        const response = await axiosInstance().get('customers');
         setCustomers(response.data);
       } catch (error) {
         console.error(error);
@@ -21,7 +21,7 @@ const CustomerList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axiosInstance.delete(`/customers/${id}/`);
+      await axiosInstance().delete(`/customers/${id}/`);
       setCustomers(customers.filter(customer => customer.id !== id));
     } catch (error) {
       console.error(error);
